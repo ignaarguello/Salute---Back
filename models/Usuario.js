@@ -5,7 +5,7 @@ const schema = new mongoose.Schema({
     apellido: {type: String, require: true},
     foto: {type: String, require: true},
     rol: {type: String, require: true},
-    edad: {type: Number, require: true},
+    nacimiento: {type: Date, require: true},
     email: {type: String, require: true},
     contraseña: {type: String, require: true},
     verificado: {type: Boolean, require: true},
