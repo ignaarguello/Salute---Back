@@ -8,8 +8,8 @@ const schema = new mongoose.Schema({
     nacimiento: {type: Date, require: true},
     email: {type: String, require: true},
     contraseña: {type: String, require: true},
-    verificado: {type: Boolean, require: true},
-    logeado: {type: Boolean, require: true},
+    verificado: {type: Boolean},
+    logeado: {type: Boolean},
     codigo: {type: String, require: true}
 })
 
