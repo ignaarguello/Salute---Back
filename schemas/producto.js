@@ -14,7 +14,6 @@ const schema = joi.object({
     tipo: joi
         .string()
         .required()
-        .min(4)
         .messages({
             "any.required": "Necesita un tipo de bebida",
             "string.empty": "El campo 'Tipo' tiene que ser llenado",
