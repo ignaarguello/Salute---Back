@@ -1,10 +1,13 @@
 const router = require('express').Router()
 const schemaSignUp = require('../schemas/usuarioSignUp')
 const validator = require('../middlewares/validator')
-let {registrar} = require('../controllers/usuario')
+let { registrar, verificar, ingresar  } = require('../controllers/usuario')
 const accountExistsUp = require('../middlewares/accountExistsSignUp')
+const accountExistsSignIn = require('../middlewares/accountExistsSignIn')
+const accountHasBeenVerified = require('../middlewares/accountHasBeenVerified')
 
 
 router.post('/sign-up', validator(schemaSignUp), accountExistsUp, registrar)
+router.post('/sign-in', accountExistsSignIn, accountHasBeenVerified, ingresar)
 
 module.exports = router
