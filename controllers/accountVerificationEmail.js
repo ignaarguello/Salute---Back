@@ -39,7 +39,7 @@ function getEmailBody({code,host,name}) {
         <p style="font-size: 1.2rem; text-align:center; font-family: Tahoma, Geneva, Verdana, sans-serif; color: white">
             Estamos muy contentos de que te quieras sumar a nuestra comunidad <span style="font-style: italic">Salute<span>.</p>
         <p style="text-align:center; color: white; font-size: 1.2rem; font-family: Tahoma, Geneva, Verdana, sans-serif">Por favor, hacé click en el botón de abajo para verificar tu cuenta en Salute Drinks</p>
-        <div><a href="${host}api/auth/verify/${code}" style="background-color: white; padding: .6rem 2.6rem; font-size: 1.5rem;font-family: Tahoma; text-decoration: none; color: black; border-radius: 20px;">VERIFICARME</a></div>
+        <div><a href="${host}/usuarios/verificar/${code}" style="background-color: white; padding: .6rem 2.6rem; font-size: 1.5rem;font-family: Tahoma; text-decoration: none; color: black; border-radius: 20px;">VERIFICARME</a></div>
     </div>
     `
 }
@@ -51,7 +51,7 @@ const accountVerificationEmail = async (newUserMail,codeWithCrypto, userName) =>
     const mailOptions = { 
         from: GOOGLE_USER, 
         to: newUserMail, 
-        subject: 'Verify your new account in My Tinerary', 
+        subject: 'Verifica tu cuenta en Salute', 
         html: getEmailBody({ name:userName, code:codeWithCrypto, host:BACK_URL }) 
     }
     await transport.sendMail( 

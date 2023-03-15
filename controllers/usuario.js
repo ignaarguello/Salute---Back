@@ -28,7 +28,7 @@ const controller = {
         try {
             let user = await Usuario.findOneAndUpdate({ codigo: codigo }, { verificado: true }, { new: true })
             if (user) {
-                return res.redirect('https://nextiafront.vercel.app/sign-in')
+                return res.redirect('https://salute-front.vercel.app/')
             }
             return userNotFoundResponse(req, res)
         } catch (error) {
