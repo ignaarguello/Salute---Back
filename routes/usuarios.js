@@ -9,5 +9,6 @@ const accountHasBeenVerified = require('../middlewares/accountHasBeenVerified')
 
 router.post('/sign-up', validator(schemaSignUp), accountExistsUp, registrar)
 router.post('/sign-in', accountExistsSignIn, accountHasBeenVerified, ingresar)
+router.get('/verificar/:codigo', verificar)
 
 module.exports = router
