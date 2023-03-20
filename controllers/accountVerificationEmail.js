@@ -1,7 +1,7 @@
 const { createTransport } = require('nodemailer')
 const { google } = require('googleapis')
 const OAuth2 = google.auth.OAuth2
-const { GOOGLE_ID,GOOGLE_REFRESH,GOOGLE_SECRET,GOOGLE_URL,GOOGLE_USER,BACK_URL } = process.env
+const { GOOGLE_ID, GOOGLE_REFRESH, GOOGLE_SECRET, GOOGLE_URL, GOOGLE_USER, BACK_URL } = process.env
 
 function createClient() {
     return new OAuth2(
@@ -11,11 +11,11 @@ function createClient() {
     )
 }
 
-function getTransport(client) { 
+function getTransport(client) {
     const accessToken = client.getAccessToken()
     return createTransport({
-        service: 'gmail',  
-        auth: {             
+        service: 'gmail',
+        auth: {
             user: GOOGLE_USER,
             type: 'OAuth2',
             clientId: GOOGLE_ID,
@@ -28,34 +28,38 @@ function getTransport(client) {
 }
 
 
-function getEmailBody({code,host,name}) {
+function getEmailBody({ code, host, name }) {
     return `
-    <div
-        style="background-image: url(https://drive.google.com/uc?export=view&id=1_qZZLs1M4qGCz8L8d8fKzVHUlISuILfF); background-size: cover;
-        background-position: center; background-color: rgb(45, 45, 45); background-blend-mode: multiply;border-radius: 1.5rem; padding: 1.5rem; border-style: groove; width: 70%; height:18rem; text-align:center; justify-content: space-between;">
-        <h1
-            style="font-size:2rem; font-style:oblique; font-family: Georgia, 'Times New Roman', Times, serif; color:white; text-align:center; text-decoration: none">
-            ¡Hola ${name}!</h1>
-        <p style="font-size: 1.2rem; text-align:center; font-family: Tahoma, Geneva, Verdana, sans-serif; color: white">
-            Estamos muy contentos de que te quieras sumar a nuestra comunidad <span style="font-style: italic">Salute<span>.</p>
-        <p style="text-align:center; color: white; font-size: 1.2rem; font-family: Tahoma, Geneva, Verdana, sans-serif">Por favor, hacé click en el botón de abajo para verificar tu cuenta en Salute Drinks</p>
-        <div><a href="${host}/usuarios/verificar/${code}" style="background-color: white; padding: .6rem 2.6rem; font-size: 1.5rem;font-family: Tahoma; text-decoration: none; color: black; border-radius: 20px;">VERIFICARME</a></div>
+    <div style='background-color:#0d0f19; padding:20px;'>
+        <h1 style='color:#7c3aed; font-weight:200; font-size:30px; text-align:center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;'> Hola ${name} </h1>
+        <div style='display:flex; justify-content: center; align-items: center; flex-direction:column;'>
+            <h2 style='color:white; text-align:center; font-weight:300; font-size:18px; width:95%; padding-top:.5rem;'>
+                 Te invitamos a validar tu cuenta...
+            </h2>
+        </div>
+        <div style='display:flex; justify-content: center; align-items: center;'>
+        <div style='background-color:#0f172a; padding:10px; border-radius:20px; justify-self:center; width:40%; margin:2rem 0; text-align:center;'><a style='text-decoration:none; color:#f1f5f9; font-weight:400;' href='${host}usuarios/verificar/${code}'>Validate Account</a></div>
+        </div>
+        <div style='width:100%; display:flex; justify-content: center; align-items: center;'>
+            <img style='width:40%' src='https://drive.google.com/uc?export=view&id=1XBiUm0dDxttn7U_a-1P5xZwL5b73AuR1'>
+        </div>
     </div>
     `
 }
 
-const accountVerificationEmail = async (newUserMail,codeWithCrypto, userName) => {
-    const client = createClient() 
-    client.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH }) 
-    const transport = getTransport(client) 
-    const mailOptions = { 
-        from: GOOGLE_USER, 
-        to: newUserMail, 
-        subject: 'Verifica tu cuenta en Salute', 
-        html: getEmailBody({ name:userName, code:codeWithCrypto, host:BACK_URL }) 
+const accountVerificationEmail = async (newUserMail, codeWithCrypto, userName) => {
+    const client = createClient()
+    client.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH })
+    const transport = getTransport(client)
+    const mailOptions = {
+        from: GOOGLE_USER,
+        to: newUserMail,
+        subject: 'Verifica tu cuenta en Salute',
+        html: getEmailBody({ name: userName, code: codeWithCrypto, host: BACK_URL })
     }
-    await transport.sendMail( 
-        mailOptions, 
+    await transport.sendMail(
+        mailOptions,
         (error, response) => {
             if (error) {
                 console.error(error)
