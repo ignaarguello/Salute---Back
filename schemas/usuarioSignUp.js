@@ -25,18 +25,6 @@ const schemaSignUp = joi.object({
             "string.min": "El apellido debe tener más de 2 letras",
             "string.max": "El apellido debe tener menos de 40 letras",
         }),
-    rol: joi
-        .string()
-        .required()
-        .min(4)
-        .max(5)
-        .messages({
-            "any.required": "El campo 'rol' es obligatorio",
-            "string.empty": "El campo 'rol' no puede estar vacío",
-            "string.base": "El rol debe contener solo letras",
-            "string.min": "El rol debe tener más de 4 letras",
-            "string.max": "El rol debe tener menos de 5 letras",
-        }),
     foto: joi
         .string()
         .required()

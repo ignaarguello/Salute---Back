@@ -7,7 +7,8 @@ const jwt = require('jsonwebtoken')
 
 const controller = {
     registrar: async (req, res, next) => {
-        let { nombre, apellido, foto, rol, nacimiento, email, contraseña } = req.body
+        let { nombre, apellido, foto, nacimiento, email, contraseña } = req.body
+        let rol = 'usuario'
         let verificado = false
         let logeado = false
         let codigo = crypto.randomBytes(10).toString('hex')
@@ -46,12 +47,12 @@ const controller = {
             if (validarContraseña) {
                 const userBD = await Usuario.findOneAndUpdate({ _id: user.id }, { logeado: true })
                 const token = jwt.sign(
-                    { id: userBD._id, nombre: userBD.nombre, apellido: userBD.apellido, foto: userBD.foto, loggeado: userBD.loggeado },
+                    { id: userBD._id, nombre: userBD.nombre, apellido: userBD.apellido, foto: userBD.foto, loggeado: userBD. logeado },
                     process.env.KEY_JWT,
                     { expiresIn: 60 * 60 * 24 }
                 )
                 res.status(200).json({
-                    response: { token },
+                    response: { token, user },
                     successs: true,
                     message: `Bienvenido ${user.nombre}`
                 })
