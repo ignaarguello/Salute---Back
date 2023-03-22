@@ -34,16 +34,6 @@ const schemaSignUp = joi.object({
             "string.empty": "La foto no puede estar vacía",
             "string.uri": "La foto debe ser un link válido",
         }),
-    nacimiento: joi
-        .string()
-        .required()
-        .min(8)
-        .max(10)
-        .messages({
-            "any.required": "El campo 'nacimiento' es obligatorio",
-            "string.empty": "El campo 'nacimiento' no puede estar vacío",
-            "string.base": "El nacimiento debe ser solo numeros",
-        }),
     email: joi
         .string()
         .required()
