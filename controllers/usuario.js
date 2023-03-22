@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 
 const controller = {
     registrar: async (req, res, next) => {
-        let { nombre, apellido, foto, nacimiento, email, contraseña } = req.body
+        let { nombre, apellido, foto, email, contraseña } = req.body
         let rol = 'usuario'
         let verificado = false
         let logeado = false
@@ -15,7 +15,7 @@ const controller = {
         contraseña = bcryptjs.hashSync(contraseña, 10)
 
         try {
-            await Usuario.create({ nombre, apellido, foto, rol, nacimiento, email, contraseña, verificado, logeado, codigo })
+            await Usuario.create({ nombre, apellido, foto, rol, email, contraseña, verificado, logeado, codigo })
             await accountVerificationEmail(email, codigo, nombre)
             return userSignedUpResponse(req, res)
         } catch (error) {
