@@ -39,7 +39,7 @@ function getEmailBody({ code, host, name }) {
             </h2>
         </div>
         <div style='display:flex; justify-content: center; align-items: center;'>
-        <div style='background-color:#0f172a; padding:10px; border-radius:20px; justify-self:center; width:40%; margin:2rem 0; text-align:center;'><a style='text-decoration:none; color:#f1f5f9; font-weight:400;' href='${host}usuarios/verificar/${code}'>Validate Account</a></div>
+        <div style='background-color:#0f172a; padding:10px; border-radius:20px; justify-self:center; width:40%; margin:2rem 0; text-align:center;'><a style='text-decoration:none; color:#f1f5f9; font-weight:400;' href='${host}/usuarios/verificar/${code}'>Validate Account</a></div>
         </div>
         <div style='width:100%; display:flex; justify-content: center; align-items: center;'>
             <img style='width:40%' src='https://drive.google.com/uc?export=view&id=1XBiUm0dDxttn7U_a-1P5xZwL5b73AuR1'>
