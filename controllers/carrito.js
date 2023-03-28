@@ -61,9 +61,8 @@ const controller = {
         const {productoId} = req.params
         const {query, usuarioId } = req.query
         
-        // let producto = await Producto.findById(body.productoId)
         const productoEnviado = await Carrito.findOne({ productoId: productoId})
-        const miCarrito = await Carrito.find({usuarioId: usuarioId})
+        // const miCarrito = await Carrito.find({usuarioId: usuarioId})
         // console.log(miCarrito);
         // console.log(usuarioId);
         // console.log(productoEnviado);
