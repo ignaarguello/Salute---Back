@@ -2,8 +2,9 @@ const Usuario = require('../models/Usuario')
 const bcryptjs = require('bcryptjs')
 const crypto = require('crypto')
 const accountVerificationEmail = require('./accountVerificationEmail')
-const { userSignedUpResponse, userNotFoundResponse, invalidCredentialsResponse } = require('../config/responses')
+const { userSignedUpResponse, userNotFoundResponse, invalidCredentialsResponse, userSignedOutResponse } = require('../config/responses')
 const jwt = require('jsonwebtoken')
+
 
 const controller = {
     registrar: async (req, res, next) => {
@@ -45,9 +46,9 @@ const controller = {
             const validarContraseña = bcryptjs.compareSync(contraseña, user.contraseña)
 
             if (validarContraseña) {
-                const userBD = await Usuario.findOneAndUpdate({ _id: user.id }, { logeado: true })
+                await Usuario.findOneAndUpdate({ _id: user.id }, { logeado: true }, { new: true })
                 const token = jwt.sign(
-                    { id: userBD._id, nombre: userBD.nombre, apellido: userBD.apellido, foto: userBD.foto, loggeado: userBD. logeado },
+                    { id: user._id, nombre: user.nombre, apellido: user.apellido, foto: user.foto, loggeado: user.logeado },
                     process.env.KEY_JWT,
                     { expiresIn: 60 * 60 * 24 }
                 )
@@ -63,6 +64,38 @@ const controller = {
             next(error)
         }
     },
+
+    ingresar_token: async (req, res, next) => {
+
+        let { user } = req
+
+        try {
+            return res.json({
+                response: {
+                    _id: user.id,
+                    nombre: user.nombre,
+                    email: user.email,
+                    rol: user.rol,
+                },
+                success: true,
+                message: 'Bienvenido' + user.nombre
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    cerrar_sesion: async (req, res, next) => {
+
+        const { id } = req.user
+
+        try {
+            await Usuario.findOneAndUpdate({ _id: id }, { logeado: false }, { new: true })
+            return userSignedOutResponse(req, res)
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 module.exports = controller
