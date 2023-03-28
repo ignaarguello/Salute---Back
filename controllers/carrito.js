@@ -58,23 +58,24 @@ const controller = {
     },
 
     editarProductoCarrito: async(req, res) => {
-        const { id } = req.params
-        console.log(id);
-        const {query} = req.query
-        const body = req.body
+        const {productoId} = req.params
+        const {query, usuarioId } = req.query
         
-        let producto = await Producto.findById(body.productoId)
-        const productoEnviado = await Carrito.findById(id)
-
+        // let producto = await Producto.findById(body.productoId)
+        const productoEnviado = await Carrito.findOne({ productoId: productoId})
+        const miCarrito = await Carrito.find({usuarioId: usuarioId})
+        // console.log(miCarrito);
+        // console.log(usuarioId);
+        // console.log(productoEnviado);
         if(!query){
             res.status(404).json({
                 success: false,
                 message: "Debes enviar una query"
             })
-        } else if( productoEnviado && query === "agregar"){
-            body.cantidad = body.amount + 1
-
-            await Carrito.findByIdAndUpdate(id, body, {new: true})
+        } else if( productoEnviado && query === "incrementar"){
+            let incrementando = productoEnviado.cantidad += 1
+            // console.log(incrementando);
+            await Carrito.findOneAndUpdate({productoId: productoId}, {cantidad: incrementando}, {new: true})
                 .then( (prod) => {
                     res.status(200).json({
                         success: true,
@@ -82,24 +83,54 @@ const controller = {
                         data: prod
                     })
                 })
-        } else if( productoEnviado && query === "eliminar"){
-            body.amount = body.amount - 1
-
-            await Carrito.findByIdAndUpdate(id, body, {new: true})
-            .then( (prod) => {
-                res.status(200).json({
-                    success: true,
-                    message: 'Se sacó un producto',
-                    data: prod
+        } else if( productoEnviado && query === "decrementar"){
+            if(productoEnviado.cantidad <= 1){
+                res.status(400).json({
+                    success: false,
+                    message: 'No se puede eliminar más cantidad del producto',
+                    data: productoEnviado
                 })
-            })
+            } else {
+                let decrementando = productoEnviado.cantidad -= 1
+                
+                await Carrito.findOneAndUpdate({productoId: productoId}, {cantidad: decrementando}, {new: true})
+                .then( (prod) => {
+                    res.status(200).json({
+                        success: true,
+                        message: 'Se sacó un producto',
+                        data: prod
+                    })
+                })
+            }
         } else {
             res.status(400).json({
                 success: false,
-                message: "ocurrio un error"
+                message: "Ocurrio un error"
             })
         }
     },
+
+    eliminarDelCarrito: async(req, res) => {
+        const { productoId } = req.params
+        // console.log(productoId);
+        let productoEnCarrito = await Carrito.findOne({productoId: productoId})
+        // console.log(productoEnCarrito);
+        const { _id } = await Producto.findOne({nombre: productoEnCarrito.nombre})
+        console.log(_id);
+        try{
+            await Carrito.findOneAndDelete({productoId: productoId})
+            await Producto.findByIdAndUpdate(_id, {enCarrito: false}, {new: true})
+            res.status(200).json({
+                success: true,
+                message: 'Producto eliminado del carrito'
+            })
+        } catch(error){
+            res.status(400).json({
+                success: false,
+                message: 'No se pudo eliminar del carrito'
+            })
+        }
+    }
 }
 
 module.exports = controller
