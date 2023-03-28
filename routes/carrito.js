@@ -1,8 +1,9 @@
 let router = require('express').Router()
-let { agregarAlCarrito, traerProductosCarrito, editarProductoCarrito } = require('../controllers/carrito')
+let { agregarAlCarrito, traerProductosCarrito, editarProductoCarrito, eliminarDelCarrito } = require('../controllers/carrito')
 
 router.post('/', agregarAlCarrito)
 router.get('/', traerProductosCarrito)
-router.put('/:id', editarProductoCarrito)
+router.put('/:productoId', editarProductoCarrito)
+router.delete('/:productoId', eliminarDelCarrito)
 
 module.exports = router
