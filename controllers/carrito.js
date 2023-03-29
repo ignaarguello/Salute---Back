@@ -3,7 +3,7 @@ const Producto = require('../models/Producto')
 
 const controller = {
     agregarAlCarrito: async (req, res) => {
-        const { nombre, imagen, precio, usuarioId, productoId } = req.body
+        const { nombre, imagen, precio, usuarioId, tipo, productoId } = req.body
         const esProducto = await Producto.findOne({ nombre })
         const noEstaVacio = (nombre !== '') && (imagen !== '') && (precio !== '') && (usuarioId !== '') && (productoId !== '')
         const estaEnCarrito = await Carrito.findOne({ nombre, usuarioId })
@@ -14,11 +14,11 @@ const controller = {
                 message: 'El producto no se encuentra en nuestra base de datos.'
             })
         } else if( noEstaVacio && !estaEnCarrito){
-            const nuevoProdEnCarrito = new Carrito({ nombre, imagen, precio, cantidad: 1, usuarioId, productoId })
+            const nuevoProdEnCarrito = new Carrito({ nombre, imagen, precio, tipo, cantidad: 1, usuarioId, productoId })
 
             let producto = await Producto.findById(esProducto._id)
 
-            await Producto.findByIdAndUpdate(esProducto?._id, {enCarrito: true, nombre, imagen, precio}, {new: true})
+            await Producto.findByIdAndUpdate(esProducto?._id, {enCarrito: true, nombre, imagen, precio, tipo}, {new: true})
                 .then( (producto) =>{
                     nuevoProdEnCarrito.save()
                     res.json({
