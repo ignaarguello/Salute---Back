@@ -5,7 +5,7 @@ let { registrar, verificar, ingresar, ingresar_token, cerrar_sesion  } = require
 const accountExistsUp = require('../middlewares/accountExistsSignUp')
 const accountExistsSignIn = require('../middlewares/accountExistsSignIn')
 const accountHasBeenVerified = require('../middlewares/accountHasBeenVerified')
-const mustSignIn = require('../middlewares/mustSignIn©')
+const mustSignIn = require('../middlewares/mustSignIn')
 const passport = require('../config/passport')
 
 
