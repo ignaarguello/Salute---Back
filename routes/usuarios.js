@@ -5,6 +5,8 @@ let { registrar, verificar, ingresar  } = require('../controllers/usuario')
 const accountExistsUp = require('../middlewares/accountExistsSignUp')
 const accountExistsSignIn = require('../middlewares/accountExistsSignIn')
 const accountHasBeenVerified = require('../middlewares/accountHasBeenVerified')
+const mustSignIn = require('../middlewares/mustSignIn')
+const passport = require('../config/passport')
 
 
 router.post('/sign-up', validator(schemaSignUp), accountExistsUp, registrar)
