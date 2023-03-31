@@ -17,9 +17,12 @@ passport.use(
                 if (user) {
                     user = {
                         id: user._id,
-                        nombe: user.nombre,
+                        nombre: user.nombre,
+                        apellido:user.apellido,
+                        foto:user.foto,
                         email: user.email,
                         rol: user.rol,
+                        logeado:user.logeado,
                     }
                     return done(null, user)
                 } else {
