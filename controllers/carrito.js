@@ -61,11 +61,11 @@ const controller = {
         const {productoId} = req.params
         const {query, usuarioId } = req.query
         
-        const productoEnviado = await Carrito.findOne({ productoId: productoId})
+        const productoEnviado = await Carrito.findOne({ productoId: productoId, usuarioId: usuarioId})
         // const miCarrito = await Carrito.find({usuarioId: usuarioId})
         // console.log(miCarrito);
         // console.log(usuarioId);
-        // console.log(productoEnviado);
+        console.log(productoEnviado);
         if(!query){
             res.status(404).json({
                 success: false,
