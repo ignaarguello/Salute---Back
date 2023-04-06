@@ -2,13 +2,13 @@ const axios = require("axios")
 
 class PaymentService{
     async createPayment(req){
-        console.log(req);
+        // console.log(req);
         const url = "https://api.mercadopago.com/checkout/preferences"
 
         const body = {
                 "items": [
                     {
-                        "id": "item-ID-1234",
+                        "id": "idcompra-1",
                         "title": req.titulo,
                         "currency_id": "ARS",
                         "picture_url": req.imagen,
@@ -19,9 +19,9 @@ class PaymentService{
                     }
                 ],
                 "payer": {
-                    "name": "Juan",
-                    "surname": "Lopez",
-                    "email": "test_user_1005535830@testuser.com",
+                    "name": req.nombreComprador,
+                    "surname": req.apellidoComprador,
+                    "email": req.emailComprador,
                     "phone": {
                         "area_code": "11",
                         "number": "4444-4444"
