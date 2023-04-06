@@ -4,7 +4,7 @@ const PaymentService = require('../services/PaymentService')
 const PaymentInstance = new PaymentController( new PaymentService())
 
 router.post('/', function(req, res, next) {
-  // console.log("REQ ->",req.body);
+  console.log("RES ->",res.body);
   PaymentInstance.getPaymentLink(req,res)
 })
 
