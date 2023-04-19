@@ -9,6 +9,7 @@ class PaymentController {
 
             console.log("PAYMENT:",payment);
             return res.json(payment)
+
         } catch(error){
             console.log(error);
 
