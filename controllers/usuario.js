@@ -25,7 +25,6 @@ const controller = {
 
     verificar: async (req, res, next) => {
         const { codigo } = req.params
-        console.log(codigo)
         try {
             let user = await Usuario.findOneAndUpdate({ codigo: codigo }, { verificado: true }, { new: true })
             if (user) {
@@ -41,15 +40,13 @@ const controller = {
         const { contraseña } = req.body;
         const { user } = req;
 
-        console.log(req)
-
         try {
             const validarContraseña = bcryptjs.compareSync(contraseña, user.contraseña)
 
             if (validarContraseña) {
                 await Usuario.findOneAndUpdate({ _id: user.id }, { logeado: true })
                 const token = jwt.sign(
-                    { id: user._id, nombre: user.nombre, apellido: user.apellido, foto: user.foto, rol:user.rol, logeado: user.logeado },
+                    { id: user._id, nombre: user.nombre, apellido: user.apellido, foto: user.foto, rol: user.rol, logeado: user.logeado },
                     process.env.KEY_JWT,
                     { expiresIn: 60 * 60 * 24 }
                 )
@@ -70,7 +67,7 @@ const controller = {
         let { user } = req
 
         try {
-            return  res.status(200).json({
+            return res.status(200).json({
                 response: {
                     user: user,
                     success: true,
