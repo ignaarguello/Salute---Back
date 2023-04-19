@@ -7,8 +7,7 @@ class PaymentController {
         try{
             const payment = await this.subscriptionService.createPayment(req.body)
 
-            console.log(payment)
-            
+            console.log("PAYMENT:",payment);
             return res.json(payment)
 
         } catch(error){
