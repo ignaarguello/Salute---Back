@@ -24,16 +24,16 @@ class PaymentService{
                     "email": req.emailComprador,
                     "phone": {
                         "area_code": "11",
-                        "number": "4444-4444"
+                        "number": req.celularComprador
                     },
                     "identification": {
                         "type": "DNI",
                         "number": "12345678"
                     },
                     "address": {
-                        "street_name": "Street",
-                        "street_number": 123,
-                        "zip_code": "5700"
+                        "street_name": req.direccionComprador,
+                        "street_number": req.alturaComprador,
+                        "zip_code": req.postalComprador
                     }
                 },
                 "back_urls": {
