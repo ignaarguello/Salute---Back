@@ -6,6 +6,7 @@ mercadopago.configure({ access_token: process.env.ACCESS_TOKEN })
 const controller = {
     create: async (req, res) => {
         const product = req.body
+        console.log(req.body)
         try {
             let preference = {
                 items: [
