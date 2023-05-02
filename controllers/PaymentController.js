@@ -1,24 +1,57 @@
-class PaymentController {
-    constructor(subscriptionService) {
-        this.subscriptionService = subscriptionService
-    }
+const mercadopago = require('mercadopago')
+require('dotenv').config()
 
-    async getPaymentLink(req, res) {
-        try{
-            const payment = await this.subscriptionService.createPayment(req.body)
+mercadopago.configure({ access_token: process.env.ACCESS_TOKEN })
 
-            console.log("PAYMENT:",payment);
-            return res.json(payment)
+const controller = {
+    create: async () => {
+        const product = req.body
+        try {
+            let preference = {
+                items: [
+                    {
+                        id: 123,
+                        title: 'Compra Salute Drinks',
+                        currency_id: 'ARS',
+                        picture_url: 'https://salute-front.vercel.app/images/logo-salute.png',
+                        category_id: 'art',
+                        quantity: 1,
+                        unit_price: product.precio,
+                    }
+                ],
+                back_urls: {
+                    success: 'http://localhost:3000',
+                    pending: '',
+                    failure: '',
+                },
+                auto_return: 'approved',
+                binady_mode: true,
+            }
 
-        } catch(error){
-            console.log(error);
+            await mercadopago.preferences.create(preference)
+                .then((response) => {
+                    res
+                        .status(200)
+                        .json({
+                            success: true,
+                            response
+                        })
 
-            return res.status(500).json({
-                error: true,
-                msg: "failed to create payment"
+                    if (response.status === 201) {
+                        console.log('Todo salio OK')
+                    }
+                })
+                .catch((error) => res.status(400).send({ error: error.manssage })
+                )
+
+        } catch (error) {
+            res.status(400).json({
+                success: false,
+                message: error.message
             })
         }
     }
 }
 
-module.exports = PaymentController
+
+export default controller
