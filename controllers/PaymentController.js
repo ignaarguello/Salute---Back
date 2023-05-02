@@ -4,7 +4,7 @@ require('dotenv').config()
 mercadopago.configure({ access_token: process.env.ACCESS_TOKEN })
 
 const controller = {
-    create: async () => {
+    create: async (req, res) => {
         const product = req.body
         try {
             let preference = {
@@ -54,4 +54,4 @@ const controller = {
 }
 
 
-export default controller
+module.exports = controller

@@ -1,11 +1,7 @@
-let router = require('express').Router()
-const PaymentController = require('../controllers/PaymentController')
-const PaymentService = require('../services/PaymentService')
-const PaymentInstance = new PaymentController( new PaymentService())
+const router = require('express').Router()
+const { create } = require('../controllers/PaymentController')
 
-router.post('/', function(req, res, next) {
-  console.log("RES ->",res.body);
-  PaymentInstance.getPaymentLink(req,res)
-})
+router.post('/', create)
+
 
 module.exports = router
