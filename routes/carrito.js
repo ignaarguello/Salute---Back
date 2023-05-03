@@ -1,5 +1,5 @@
 let router = require('express').Router()
-let { agregarAlCarrito, traerProductosCarrito, editarProductoCarrito, eliminarDelCarrito } = require('../controllers/carrito')
+let { agregarAlCarrito, traerProductosCarrito, editarProductoCarrito, eliminarDelCarrito, eliminarComprasUsuario } = require('../controllers/carrito')
 
 router.post('/', agregarAlCarrito)
 router.get('/', traerProductosCarrito)

@@ -8,18 +8,18 @@ const controller = {
         const noEstaVacio = (nombre !== '') && (imagen !== '') && (precio !== '') && (usuarioId !== '') && (productoId !== '')
         const estaEnCarrito = await Carrito.findOne({ nombre, usuarioId })
 
-        if (!esProducto){
+        if (!esProducto) {
             res.status(400).json({
                 success: false,
                 message: 'El producto no se encuentra en nuestra base de datos.'
             })
-        } else if( noEstaVacio && !estaEnCarrito){
+        } else if (noEstaVacio && !estaEnCarrito) {
             const nuevoProdEnCarrito = new Carrito({ nombre, imagen, precio, tipo, cantidad: 1, usuarioId, productoId })
 
             let producto = await Producto.findById(esProducto._id)
 
-            await Producto.findByIdAndUpdate(esProducto?._id, {enCarrito: true, nombre, imagen, precio, tipo}, {new: true})
-                .then( (producto) =>{
+            await Producto.findByIdAndUpdate(esProducto?._id, { enCarrito: true, nombre, imagen, precio, tipo }, { new: true })
+                .then((producto) => {
                     nuevoProdEnCarrito.save()
                     res.json({
                         success: true,
@@ -27,10 +27,10 @@ const controller = {
                         data: producto
                     })
                 })
-                .catch( (error) => {
+                .catch((error) => {
                     console.error(error);
                 })
-        } else if(estaEnCarrito){
+        } else if (estaEnCarrito) {
             res.status(400).json({
                 success: false,
                 message: 'Ya esta en el carrito',
@@ -38,13 +38,13 @@ const controller = {
         }
     },
 
-    traerProductosCarrito: async(req, res) => {
+    traerProductosCarrito: async (req, res) => {
         let query = {}
-        if (req.query.usuarioId){
-            query = { usuarioId: req.query.usuarioId}
+        if (req.query.usuarioId) {
+            query = { usuarioId: req.query.usuarioId }
         }
         const productosEnCarrito = await Carrito.find(query)
-        if (productosEnCarrito.length > 0){
+        if (productosEnCarrito.length > 0) {
             res.status(200).json({
                 success: true,
                 data: productosEnCarrito
@@ -57,33 +57,33 @@ const controller = {
         }
     },
 
-    editarProductoCarrito: async(req, res) => {
-        const {productoId} = req.params
-        const {query, usuarioId } = req.query
-        
-        const productoEnviado = await Carrito.findOne({ productoId: productoId, usuarioId: usuarioId})
+    editarProductoCarrito: async (req, res) => {
+        const { productoId } = req.params
+        const { query, usuarioId } = req.query
+
+        const productoEnviado = await Carrito.findOne({ productoId: productoId, usuarioId: usuarioId })
         // const miCarrito = await Carrito.find({usuarioId: usuarioId})
         // console.log(miCarrito);
         // console.log(usuarioId);
         console.log(productoEnviado);
-        if(!query){
+        if (!query) {
             res.status(404).json({
                 success: false,
                 message: "Debes enviar una query"
             })
-        } else if( productoEnviado && query === "incrementar"){
+        } else if (productoEnviado && query === "incrementar") {
             let incrementando = productoEnviado.cantidad += 1
             // console.log(incrementando);
-            await Carrito.findOneAndUpdate({productoId: productoId}, {cantidad: incrementando}, {new: true})
-                .then( (prod) => {
+            await Carrito.findOneAndUpdate({ productoId: productoId }, { cantidad: incrementando }, { new: true })
+                .then((prod) => {
                     res.status(200).json({
                         success: true,
                         message: 'Se agrego un producto',
                         data: prod
                     })
                 })
-        } else if( productoEnviado && query === "decrementar"){
-            if(productoEnviado.cantidad <= 1){
+        } else if (productoEnviado && query === "decrementar") {
+            if (productoEnviado.cantidad <= 1) {
                 res.status(400).json({
                     success: false,
                     message: 'No se puede eliminar más cantidad del producto',
@@ -91,15 +91,15 @@ const controller = {
                 })
             } else {
                 let decrementando = productoEnviado.cantidad -= 1
-                
-                await Carrito.findOneAndUpdate({productoId: productoId}, {cantidad: decrementando}, {new: true})
-                .then( (prod) => {
-                    res.status(200).json({
-                        success: true,
-                        message: 'Se sacó un producto',
-                        data: prod
+
+                await Carrito.findOneAndUpdate({ productoId: productoId }, { cantidad: decrementando }, { new: true })
+                    .then((prod) => {
+                        res.status(200).json({
+                            success: true,
+                            message: 'Se sacó un producto',
+                            data: prod
+                        })
                     })
-                })
             }
         } else {
             res.status(400).json({
@@ -109,24 +109,45 @@ const controller = {
         }
     },
 
-    eliminarDelCarrito: async(req, res) => {
+    eliminarDelCarrito: async (req, res) => {
         const { productoId } = req.params
         // console.log(productoId);
-        let productoEnCarrito = await Carrito.findOne({productoId: productoId})
+        let productoEnCarrito = await Carrito.findOne({ productoId: productoId })
         // console.log(productoEnCarrito);
-        const { _id } = await Producto.findOne({nombre: productoEnCarrito.nombre})
+        const { _id } = await Producto.findOne({ nombre: productoEnCarrito.nombre })
         console.log(_id);
-        try{
-            await Carrito.findOneAndDelete({productoId: productoId})
-            await Producto.findByIdAndUpdate(_id, {enCarrito: false}, {new: true})
+        try {
+            await Carrito.findOneAndDelete({ productoId: productoId })
+            await Producto.findByIdAndUpdate(_id, { enCarrito: false }, { new: true })
             res.status(200).json({
                 success: true,
                 message: 'Producto eliminado del carrito'
             })
-        } catch(error){
+        } catch (error) {
             res.status(400).json({
                 success: false,
                 message: 'No se pudo eliminar del carrito'
+            })
+        }
+    },
+
+    eliminarComprasUsuario: async (req, res) => {
+        const { usuarioId } = req.params
+
+        console.log(req.params)
+
+        try {
+            await Carrito.deleteMany({ usuarioId: usuarioId })
+            res.status(200).json({
+                success: true,
+                message: 'Compras Eliminadas con exito'
+            })
+
+            console.log('Compras Eliminadas con exito desde controlador')
+        } catch (error) {
+            res.status(400).json({
+                success: false,
+                message: error.message,
             })
         }
     }
