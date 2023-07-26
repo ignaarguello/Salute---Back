@@ -44,7 +44,7 @@ const controller = {
             const validarContraseña = bcryptjs.compareSync(contraseña, user.contraseña)
 
             if (validarContraseña) {
-                await Usuario.findOneAndUpdate({ _id: user.id }, { logeado: true })
+                await Usuario.findOneAndUpdate({ _id: user.id }, { logeado: true }, {new:true})
                 const token = jwt.sign(
                     { id: user._id, nombre: user.nombre, apellido: user.apellido, foto: user.foto, rol: user.rol, logeado: user.logeado },
                     process.env.KEY_JWT,
@@ -56,7 +56,6 @@ const controller = {
                     message: `Bienvenido ${user.nombre}`
                 })
             }
-
             return invalidCredentialsResponse(req, res)
         } catch (error) {
             next(error)
@@ -67,7 +66,7 @@ const controller = {
         let { user } = req
 
         try {
-            return res.status(200).json({
+            res.status(200).json({
                 response: {
                     user: user,
                     success: true,

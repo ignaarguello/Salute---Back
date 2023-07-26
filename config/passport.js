@@ -1,7 +1,7 @@
 const passport = require('passport')
 const passportJwt = require('passport-jwt')
 
-const {KEY_JWT} = process.env
+const { KEY_JWT } = process.env
 
 const Usuario = require('../models/Usuario')
 
@@ -11,18 +11,18 @@ passport.use(
             jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: KEY_JWT
         },
-        async (jwt_payload,done) => {
+        async (jwt_payload, done) => {
             try {
-                let user = await Usuario.findOne({_id:jwt_payload.id})
+                let user = await Usuario.findOne({ _id: jwt_payload.id })
                 if (user) {
+                    let idNuevo = user.id
                     user = {
-                        id: user._id,
+                        id: idNuevo,
                         nombre: user.nombre,
-                        apellido:user.apellido,
-                        foto:user.foto,
+                        apellido: user.apellido,
+                        foto: user.foto,
                         email: user.email,
                         rol: user.rol,
-                        logeado:user.logeado,
                     }
                     return done(null, user)
                 } else {
@@ -30,7 +30,7 @@ passport.use(
                 }
             } catch (error) {
                 console.log(error)
-                return done(error,false)
+                return done(error, false)
             }
         }
     )
