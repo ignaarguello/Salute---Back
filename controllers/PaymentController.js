@@ -22,7 +22,7 @@ const controller = {
                     }
                 ],
                 back_urls: {
-                    success: 'http://localhost:3000/payment-success',
+                    success: `${process.env.FRONT_URL}/payment-success`,
                     pending: '',
                     failure: '',
                 },
