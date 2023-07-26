@@ -6,11 +6,8 @@ mercadopago.configure({ access_token: process.env.ACCESS_TOKEN })
 
 const controller = {
     create: async (req, res) => {
+        //?Metodo que crea la preferencia de mp y nos devuelve una response. Donde consumimos el 'Init Point'
         const product = req.body
-
-        const { usuarioId } = req.body
-        console.log('Obtuvimos usuario del req', usuarioId)
-
         try {
             let preference = {
                 items: [
@@ -25,7 +22,7 @@ const controller = {
                     }
                 ],
                 back_urls: {
-                    success: 'http://localhost:3000',
+                    success: 'http://localhost:3000/payment-success',
                     pending: '',
                     failure: '',
                 },
@@ -36,24 +33,19 @@ const controller = {
             await mercadopago.preferences.create(preference)
                 .then((response) => {
                     res
-                        .status(200)
                         .json({
                             success: true,
                             response
                         })
                 })
-                .catch((error) => res.status(400).send({ error: error.manssage })
-                )
-
-            await Carrito.deleteMany({ usuarioId: usuarioId })
-            console.log('Compras eliminadas desde controlador Payment')
-        } catch (error) {
-            res.status(400).json({
-                success: false,
-                message: error.message
-            })
+                .catch((error) => {
+                    res.status(500).json({ error: error.message });
+                })
         }
-    }
+        catch (error) {
+            console.log('error')
+        }
+    },
 }
 
 

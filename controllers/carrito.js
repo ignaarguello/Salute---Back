@@ -130,27 +130,6 @@ const controller = {
             })
         }
     },
-
-    eliminarComprasUsuario: async (req, res) => {
-        const { usuarioId } = req.params
-
-        console.log(req.params)
-
-        try {
-            await Carrito.deleteMany({ usuarioId: usuarioId })
-            res.status(200).json({
-                success: true,
-                message: 'Compras Eliminadas con exito'
-            })
-
-            console.log('Compras Eliminadas con exito desde controlador')
-        } catch (error) {
-            res.status(400).json({
-                success: false,
-                message: error.message,
-            })
-        }
-    }
 }
 
 module.exports = controller
