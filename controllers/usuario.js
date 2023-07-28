@@ -15,7 +15,7 @@ const controller = {
         contraseña = bcryptjs.hashSync(contraseña, 10)
 
         try {
-            //await Usuario.create({ nombre, apellido, foto, rol, email, contraseña, verificado, logeado, codigo })
+            await Usuario.create({ nombre, apellido, foto, rol, email, contraseña, verificado, logeado, codigo })
             await accountVerificationEmail(email, codigo, nombre)
             return userSignedUpResponse(req, res)
         } catch (error) {
