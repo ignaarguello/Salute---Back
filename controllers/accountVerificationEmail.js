@@ -29,22 +29,16 @@ function getTransport(client) {
 
 
 function getEmailBody({ code, host, name }) {
-    return `
-    <div style='background-color:#0d0f19; padding:20px;'>
-        <h1 style='color:#7c3aed; font-weight:200; font-size:30px; text-align:center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;'> Hola ${name} </h1>
-        <div style='display:flex; justify-content: center; align-items: center; flex-direction:column;'>
-            <h2 style='color:white; text-align:center; font-weight:300; font-size:18px; width:95%; padding-top:.5rem;'>
-                 Te invitamos a validar tu cuenta...
-            </h2>
-        </div>
-        <div style='display:flex; justify-content: center; align-items: center;'>
-        <div style='background-color:#0f172a; padding:10px; border-radius:20px; justify-self:center; width:40%; margin:2rem 0; text-align:center;'><a style='text-decoration:none; color:#f1f5f9; font-weight:400;' href='${host}/usuarios/verificar/${code}'>Validate Account</a></div>
-        </div>
-        <div style='width:100%; display:flex; justify-content: center; align-items: center;'>
-            <img style='width:40%' src='https://drive.google.com/uc?export=view&id=1XBiUm0dDxttn7U_a-1P5xZwL5b73AuR1'>
-        </div>
-    </div>
+    return `   
+            <div style='width:100%; background-color:#171717; display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <h1 style='color:#7c3aed; font-weight:200; font-size:30px;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;'> Hola ${name} </h1>
+            <div style='display:flex; justify-content: center; align-items: center; flex-direction:column;'>
+            <h2 style='color:white; text-align:center; font-weight:300; font-size:18px; padding-top:.5rem;'>
+                 Te invitamos a validar tu cuenta de nuestra plataforma. Muchas gracias.
+            </h2>   
+                <a style='background-color:#5b21b6; padding:10px; text-decoration:none; color:#f9fafb; font-weight:400; border-radius:30px; margin:2rem 0;' href='${host}/usuarios/verificar/${code}'>Validar Cuenta</a>
+            </div>    
     `
 }
 
@@ -55,7 +49,7 @@ const accountVerificationEmail = async (newUserMail, codeWithCrypto, userName) =
     const mailOptions = {
         from: GOOGLE_USER,
         to: newUserMail,
-        subject: 'Verifica tu cuenta en Salute',
+        subject: 'Verificación de cuenta en Salute Drinks',
         html: getEmailBody({ name: userName, code: codeWithCrypto, host: BACK_URL })
     }
     await transport.sendMail(
