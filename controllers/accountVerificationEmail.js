@@ -30,15 +30,21 @@ function getTransport(client) {
 
 function getEmailBody({ code, host, name }) {
     return `   
-            <div style='width:100%; background-color:#171717; display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <div style='width:100%; height:30rem; background-color:#171717; display:flex; flex-direction:column; justify-content:center; align-items:center;'>
             <h1 style='color:#7c3aed; font-weight:200; font-size:30px;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-                Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;'> Hola ${name} </h1>
+                Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;' margin:3rem 0;> Hola ${name} </h1>
             <div style='display:flex; justify-content: center; align-items: center; flex-direction:column;'>
-            <h2 style='color:white; text-align:center; font-weight:300; font-size:18px; padding-top:.5rem;'>
+            <h2 style='color:white; text-align:center; font-weight:400; font-size:18px; padding-top:.5rem;'>
                  Te invitamos a validar tu cuenta de nuestra plataforma. Muchas gracias.
-            </h2>   
+            </h2>  
+            <h2 style='color:white; text-align:center; font-weight:400; font-size:18px; padding-top:.5rem;'>
+                ¡Muchas gracias!
+            </h2>  
                 <a style='background-color:#5b21b6; padding:10px; text-decoration:none; color:#f9fafb; font-weight:400; border-radius:30px; margin:2rem 0;' href='${host}/usuarios/verificar/${code}'>Validar Cuenta</a>
-            </div>    
+            </div>  
+            <h2 style='color:#71717a; text-align:center; font-weight:200; font-size:14px; margin:2rem 0;'>
+                Equipo de Salute Drinks. #ESTAMOS
+            </h2> 
     `
 }
 
